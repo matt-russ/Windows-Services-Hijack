@@ -1,0 +1,20 @@
+When an attacker lands on a target machine, one of the most common ways to elevate their privileges to System is by discovering a windows service that is vulnerable to a hijack attack. One way to discover these vulnerable Services is by querying the running services, and excluding any that are running out of the C:\windows\ directories. The Windows directories are being excluded because they are not writable by an unprivileged user. If an attacker finds a Service that is running an executable out of a directory that is writable by an unprivileged user, then they will preform a DLL hijack in order to elevate their privileges to system.
+
+((process.command_line contains 'gsv ' OR
+process.command_line contains 'sc \\\\' OR
+process.command_line contains 'sc query' OR
+process.command_line contains 'net start' OR
+process.command_line contains 'net1 start' OR
+process.command_line contains 'Get-Service' OR
+process.command_line contains 'sc.exe \\\\' OR
+process.command_line contains 'sc.exe query' OR
+process.command_line contains 'win32_service' OR
+process.command_line contains 'net.exe start' OR
+process.command_line contains 'net1.exe start') AND
+(process.command_line contains '\'c:\\win' OR
+process.command_line contains '\"c:\\win\"' OR
+process.command_line contains '\"c:\\windows\\\"' OR
+process.command_line contains '\"c:\\windows\\system32\"' OR
+process.command_line contains '\"c:\\windows\\syswow64\"' OR
+process.command_line contains '\"c:\\windows\\system32\\\"' OR
+process.command_line contains '\"c:\\windows\\syswow64\\\"'))
